@@ -98,7 +98,7 @@ def test(test_loader, net, criterion, optimizer, epoch, device):
     correct = 0
     total = 0
 
-    logger.info(" *** Validate Encrypt ***".format(epoch + 1, config.epochs))
+    logger.info(" *** Validate Lock ***".format(epoch + 1, config.epochs))
 
     with torch.no_grad():
         for batch_index, (inputs, targets) in enumerate(test_loader):
@@ -215,8 +215,8 @@ def main():
     loaders = get_data_loader(
         transform_train, transform_test, config)
 
-    train_loader = loaders['enc_train']
-    test_loader = loaders['enc_test']
+    train_loader = loaders['lock_train']
+    test_loader = loaders['lock_test']
     test_loader_orig = loaders['orig_test']
 
     logger.info("            =======  Training  =======\n")

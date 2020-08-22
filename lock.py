@@ -11,7 +11,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--orig-data', default='./data/cifar10', help='path to the original dataset')
-    parser.add_argument('--enc-data', default='./data', help='path to output encrypted dataset')
+    parser.add_argument('--lock-data', default='./data', help='path to output locked dataset')
     parser.add_argument('--resume-path', default='./logs/checkpoints/dir/resnet50/checkpoint.pt.best', help='path to checkpoint to resume from')
     parser.add_argument('--workers', type=int, help='data loading workers', default=8)
     parser.add_argument('--batch-size', type=int, default=128, help='batch size for data loading')
@@ -19,7 +19,7 @@ def main():
     parser.add_argument('--eps', type=float, default=0.5, help='adversarial perturbation budget')
     parser.add_argument('--attack-lr', type=float, default=0.1, help='step size for PGD')
     parser.add_argument('--attack-steps', type=int, default=100, help='number of steps for adversarial attack')
-    parser.add_argument('--enc-method', default='basic', choices=['basic', 'mixup', 'horiz', 'mixandcat'], help='encryption method')
+    parser.add_argument('--lock-method', default='basic', choices=['basic', 'mixup', 'horiz', 'mixandcat'], help='lock method')
     parser.add_argument('--alpha', type=float, default=0.5, help='hyperparameter in horizontal concat')
     parser.add_argument('--lambd', type=float, default=0.5, help='hyperparameter in mixup')
     parser.add_argument('--manual-seed', type=int, default=23, help='manual seed')
@@ -51,19 +51,19 @@ def main():
     model.eval()
 
 
-    if opt.enc_method == 'basic':
+    if opt.lock_method == 'basic':
         generate_train_data(train_loader, model, kwargs, opt)
         generate_test_data(test_loader, model, kwargs, opt)
 
-    elif opt.enc_method == 'mixup':
+    elif opt.lock_method == 'mixup':
         generate_train_data_mixup(train_loader, model, kwargs, opt)
         generate_test_data_mixup(test_loader, model, kwargs, opt)
 
-    elif opt.enc_method == 'horiz':
+    elif opt.lock_method == 'horiz':
         generate_train_data_horiz(train_loader, model, kwargs, opt)
         generate_test_data_horiz(test_loader, model, kwargs, opt)
 
-    elif opt.enc_method == 'mixandcat':
+    elif opt.lock_method == 'mixandcat':
         generate_train_data_mixandcat(train_loader, model, kwargs, opt)
         generate_test_data_mixandcat(test_loader, model, kwargs, opt)
 
@@ -86,8 +86,8 @@ def generate_train_data(train_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("Time:%.4f" % (time_ep))
 
-    ch.save(train_image, os.path.join(opt.enc_data, 'train_image_basic'))
-    ch.save(train_label, os.path.join(opt.enc_data, 'train_label_basic'))
+    ch.save(train_image, os.path.join(opt.lock_data, 'train_image_basic'))
+    ch.save(train_label, os.path.join(opt.lock_data, 'train_label_basic'))
     print("Save train set finished")
 
 
@@ -115,8 +115,8 @@ def generate_test_data(test_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("Time:%.4f" % (time_ep))
 
-    ch.save(test_image, os.path.join(opt.enc_data, 'test_image_basic'))
-    ch.save(test_label, os.path.join(opt.enc_data, 'test_label_basic'))
+    ch.save(test_image, os.path.join(opt.lock_data, 'test_image_basic'))
+    ch.save(test_label, os.path.join(opt.lock_data, 'test_label_basic'))
     print("Save test set finished")
     print("Orig test set acc:%.4f" % (correct / 10000))
 
@@ -150,8 +150,8 @@ def generate_train_data_horiz(train_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("Time:%.4f" % (time_ep))
 
-    ch.save(train_image, os.path.join(opt.enc_data, 'train_image_' + str(int(opt.alpha * 100)) + '_horiz'))
-    ch.save(train_label, os.path.join(opt.enc_data, 'train_label_' + str(int(opt.alpha * 100)) + '_horiz'))
+    ch.save(train_image, os.path.join(opt.lock_data, 'train_image_' + str(int(opt.alpha * 100)) + '_horiz'))
+    ch.save(train_label, os.path.join(opt.lock_data, 'train_label_' + str(int(opt.alpha * 100)) + '_horiz'))
     print("Save train set finished")
 
 
@@ -189,8 +189,8 @@ def generate_test_data_horiz(test_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("time:%.4f" % (time_ep))
 
-    ch.save(test_image, os.path.join(opt.enc_data, 'test_image_' + str(int(opt.alpha * 100)) + '_horiz'))
-    ch.save(test_label, os.path.join(opt.enc_data, 'test_label_' + str(int(opt.alpha * 100)) + '_horiz'))
+    ch.save(test_image, os.path.join(opt.lock_data, 'test_image_' + str(int(opt.alpha * 100)) + '_horiz'))
+    ch.save(test_label, os.path.join(opt.lock_data, 'test_label_' + str(int(opt.alpha * 100)) + '_horiz'))
     print("Save test set finished")
     print("Orig test set acc:%.4f" % (correct / 10000))
 
@@ -220,8 +220,8 @@ def generate_train_data_mixup(train_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("Time:%.4f" % (time_ep))
 
-    ch.save(train_image, os.path.join(opt.enc_data, 'train_image_' + str(int(opt.lambd * 100)) + '_mixup'))
-    ch.save(train_label, os.path.join(opt.enc_data, 'train_label_' + str(int(opt.lambd * 100)) + '_mixup'))
+    ch.save(train_image, os.path.join(opt.lock_data, 'train_image_' + str(int(opt.lambd * 100)) + '_mixup'))
+    ch.save(train_label, os.path.join(opt.lock_data, 'train_label_' + str(int(opt.lambd * 100)) + '_mixup'))
     print("Save train set finished")
 
 
@@ -255,8 +255,8 @@ def generate_test_data_mixup(test_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("time:%.4f" % (time_ep))
 
-    ch.save(test_image, os.path.join(opt.enc_data, 'test_image_' + str(int(opt.lambd * 100)) + '_mixup'))
-    ch.save(test_label, os.path.join(opt.enc_data, 'test_label_' + str(int(opt.lambd * 100)) + '_mixup'))
+    ch.save(test_image, os.path.join(opt.lock_data, 'test_image_' + str(int(opt.lambd * 100)) + '_mixup'))
+    ch.save(test_label, os.path.join(opt.lock_data, 'test_label_' + str(int(opt.lambd * 100)) + '_mixup'))
     print("Save test set finished")
     print("Orig test set acc:%.4f" % (correct / 10000))
 
@@ -301,8 +301,8 @@ def generate_train_data_mixandcat(train_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("Time:%.4f" % (time_ep))
 
-    ch.save(train_image, os.path.join(opt.enc_data, 'train_image_mixandcat'))
-    ch.save(train_label, os.path.join(opt.enc_data, 'train_label_mixandcat'))
+    ch.save(train_image, os.path.join(opt.lock_data, 'train_image_mixandcat'))
+    ch.save(train_label, os.path.join(opt.lock_data, 'train_label_mixandcat'))
     print("Save train set finished")
 
 
@@ -351,8 +351,8 @@ def generate_test_data_mixandcat(test_loader, model, kwargs, opt):
         time_ep = time.time() - time_ep
         print("Time:%.4f" % (time_ep))
 
-    ch.save(test_image, os.path.join(opt.enc_data, 'test_image_mixandcat'))
-    ch.save(test_label, os.path.join(opt.enc_data, 'test_label_mixandcat'))
+    ch.save(test_image, os.path.join(opt.lock_data, 'test_image_mixandcat'))
+    ch.save(test_label, os.path.join(opt.lock_data, 'test_label_mixandcat'))
     print("Save test set finished")
     print("Orig test set acc:%.4f" % (correct / 10000))
 

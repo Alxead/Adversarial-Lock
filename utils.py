@@ -156,14 +156,14 @@ def get_data_loader(transform_train, transform_test, config):
         root=config.orig_data_path, train=False,
         download=True, transform=transform_test)
 
-    encrypt_train_data = torch.cat(torch.load(config.encrypted_train_image))
-    encrypt_train_labels = torch.cat(torch.load(config.encrypted_train_label))
-    encrypt_train_set = CustomTensorDataset(tensors=(encrypt_train_data, encrypt_train_labels),
+    lock_train_data = torch.cat(torch.load(config.locked_train_image))
+    lock_train_labels = torch.cat(torch.load(config.locked_train_label))
+    lock_train_set = CustomTensorDataset(tensors=(lock_train_data, lock_train_labels),
                                             transform=transform_train)
 
-    encrypt_test_data = torch.cat(torch.load(config.encrypted_test_image))
-    encrypt_test_labels = torch.cat(torch.load(config.encrypted_test_label))
-    encrypt_test_set = CustomTensorDataset(tensors=(encrypt_test_data, encrypt_test_labels),
+    lock_test_data = torch.cat(torch.load(config.locked_test_image))
+    lock_test_labels = torch.cat(torch.load(config.locked_test_label))
+    lock_test_set = CustomTensorDataset(tensors=(lock_test_data, lock_test_labels),
                                            transform=transform_test)
 
 
@@ -182,14 +182,14 @@ def get_data_loader(transform_train, transform_test, config):
             shuffle=False,
             num_workers=config.workers,
             pin_memory=True),
-        'enc_train': torch.utils.data.DataLoader(
-            encrypt_train_set,
+        'lock_train': torch.utils.data.DataLoader(
+            lock_train_set,
             batch_size=config.batch_size,
             shuffle=True,
             num_workers=config.workers,
             pin_memory=True),
-        'enc_test': torch.utils.data.DataLoader(
-            encrypt_test_set,
+        'lock_test': torch.utils.data.DataLoader(
+            lock_test_set,
             batch_size=config.batch_size,
             shuffle=False,
             num_workers=config.workers,

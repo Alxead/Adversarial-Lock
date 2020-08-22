@@ -3,10 +3,10 @@ architecture: vgg19
 
 # log and checkpoint
 orig_data_path: ./data/cifar10
-encrypted_train_image: ./data/train_image
-encrypted_train_label: ./data/train_label
-encrypted_test_image: ./data/test_image
-encrypted_test_label: ./data/test_label
+locked_train_image: ./data/train_image
+locked_train_label: ./data/train_label
+locked_test_image: ./data/test_image
+locked_test_label: ./data/test_label
 ckpt_path: ./
 ckpt_name: vgg19
 
