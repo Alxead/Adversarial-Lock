@@ -17,7 +17,7 @@ This implementation contains the main experiments on [CIFAR-10](http://www.cs.to
 In the big data era, many organizations face the dilemma of data sharing. Regular data sharing is often necessary  for human-centered discussion and communication, especially in medical scenarios. However, unprotected data sharing may also lead to valuable data leakage. Inspired by adversarial attack, 
 we propose Adversarial Lock, a method that can lock and protect data, so that for human beings the locked data look identical to the original version,  but for machine learning methods they are misleading. 
 
-<img src="https://github.com/Alxead/Adversarial-Data-Encryption/blob/master/images/mainfig.png" width="600" alt="mainfig"/>
+<img src="https://github.com/Alxead/Adversarial-Lock/blob/master/images/mainfig.png" width="600" alt="mainfig"/>
 
 ## Getting Started
 
